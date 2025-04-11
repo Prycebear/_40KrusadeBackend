@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Entity
-@Table
+@Table(name = "ABILITIES")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Abilities {
@@ -23,8 +23,8 @@ public class Abilities {
     @Column(name = "ABILITY_DESCRIPTION")
     private String abilityDescription;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "ABILITY_TYPE")
-    private String abilityType;
+//    @Enumerated(EnumType.STRING)
+//    @Column(name = "ABILITY_TYPE")
+//    private enum abilityType;
 
 }

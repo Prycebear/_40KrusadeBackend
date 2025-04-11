@@ -12,6 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/unit")
 public class UnitController {
+
     private final UnitServiceImpl unitService;
 
     public UnitController(UnitServiceImpl unitService) {
@@ -21,14 +22,14 @@ public class UnitController {
     // Create user
     @PostMapping
     public ResponseEntity<UnitDetails> createUnit(@RequestBody UnitDetails unitDetails) {
-        UnitDetails createdUnit = unitService.createUser(unitDetails);
+        UnitDetails createdUnit = unitService.createUnit(unitDetails);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUnit);
     }
 
     // Get user by ID
     @GetMapping("/{id}")
     public ResponseEntity<UnitDetails> getUnitById(@PathVariable Long id) {
-        return unitService.getUserById(id)
+        return unitService.getUnitById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -36,7 +37,7 @@ public class UnitController {
     // Get user by username
     @GetMapping("/by-unit_name/{unitName}")
     public ResponseEntity<UnitDetails> getUnitByUnitName(@PathVariable String unitName) {
-        return unitService.getUserByUsername(unitName)
+        return unitService.getUnitByUsername(unitName)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -52,7 +53,7 @@ public class UnitController {
     @PutMapping("/{id}")
     public ResponseEntity<UnitDetails> updateUser(@PathVariable Long id, @RequestBody UnitDetails unitDetails) {
         try {
-            UnitDetails updated = unitService.updateUser(id, unitDetails);
+            UnitDetails updated = unitService.updateUnit(id, unitDetails);
             return ResponseEntity.ok(updated);
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
@@ -62,7 +63,7 @@ public class UnitController {
     // Delete user
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        unitService.deleteUser(id);
+        unitService.deleteUnit(id);
         return ResponseEntity.noContent().build();
     }
 

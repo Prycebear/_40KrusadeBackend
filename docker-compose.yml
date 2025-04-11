@@ -1,0 +1,32 @@
+version: '3.8'  # Specify the version of Docker Compose
+
+services:
+  postgres:
+    image: postgres:latest  # Use the latest PostgreSQL image from Docker Hub
+    container_name: 40krusadeDB  # Name the container for easy reference
+    restart: unless-stopped  # Restart the container unless manually stopped
+    environment:
+      POSTGRES_USER: Prycebear  # Database username
+      POSTGRES_PASSWORD: Ashashcat1  # Database password
+      POSTGRES_DB: 40krusadeDB  # Name of the database to create on start
+    ports:
+      - "5432:5432"  # Map the container's port 5432 to localhost:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data  # Use a volume to persist database data
+
+# Define a named volume for persistent storage
+volumes:
+  pgdata:  # This volume will store the database data
+
+
+# -----------------------------
+# Commands to start and stop
+# -----------------------------
+# To start the containers:
+# docker-compose up -d
+# This will start the container in detached mode (running in the background).
+
+# To stop the containers:
+# docker-compose down
+# This stops and removes the containers, networks, and volumes defined in the docker-compose file.
+# You can also use `docker-compose stop` to stop containers but leave them in place.

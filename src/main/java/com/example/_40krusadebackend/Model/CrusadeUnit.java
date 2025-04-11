@@ -1,6 +1,5 @@
 package com.example._40krusadebackend.Model;
 
-
 import com.example._40krusadebackend.Enum.UnitType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -11,24 +10,24 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name = "UNIT_DETAILS")
+@Table(name = "CRUSADE_UNITS")
 @AllArgsConstructor
 @NoArgsConstructor
-public class UnitDetails {
-
+public class CrusadeUnit{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "UNIT_DETAILS_ID")
-    private Integer unitDetailsId;
+    @Column(name = "CRUSADE_UNIT_ID")
+    private Integer crusadeUnitId;
 
-    @Column(name = "UNIT_OFFICIAL_NAME")
-    private String unitOfficialName;
+    @Column(name = "CRUSADE_UNIT_NAME")
+    private String crusadeUnitName;
 
-    @Column(name = "UNIT_TYPE")
-    private UnitType unitType;
+    @Column(name = "UNIT_SIZE")
+    private int unitSize;
 
-    @Column(name = "MOVEMENT_DISTANCE")
-    private int movementDistance;
+    @ManyToMany
+    @Column(name = "EQUIPPED_ENHANCMENTS")
+    private List<Enhancements> equippedEnhancements;
 
     @Column(name = "TOUGHNESS_VALUE")
     private int toughnessValue;
@@ -44,22 +43,4 @@ public class UnitDetails {
 
     @Column(name = "OBJECTIVE_CONTROL")
     private int objectiveControl;
-
-    @OneToOne
-    @PrimaryKeyJoinColumn
-    private Faction faction;
-
-//    @ElementCollection
-//    @Column(name = "WEAPONS_AVAILABLE")
-//    private List<Weapon> weaponsAvailable;
-
-    //Abilities
-
-    //WargearOptions
-
-    //UnitComposition
-
-    @ElementCollection
-    @Column(name = "WEAPON_ABILITIES")
-    private List<String> weaponAbilities;
 }
