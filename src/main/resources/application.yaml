@@ -1,7 +1,7 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/40krusadeDB
-    username: Prycebear
+    url: jdbc:postgresql://localhost:5434/40krusadeDB
+    username: prycebear
     password: Ashashcat1
     driver-class-name: org.postgresql.Driver
     hikari:
@@ -14,3 +14,10 @@ spring:
       ddl-auto: update
     properties:
       hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+  security:
+    user:
+      name: prycebear  # Change this to the desired username
+      password: Ashashcat1  # Change this to the desired password
+server:
+  address: 0.0.0.0
+  port: 8080

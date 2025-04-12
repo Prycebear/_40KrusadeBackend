@@ -2,19 +2,18 @@ version: '3.8'  # Specify the version of Docker Compose
 
 services:
   postgres:
-    image: postgres:latest  # Use the latest PostgreSQL image from Docker Hub
-    container_name: 40krusadeDB  # Name the container for easy reference
-    restart: unless-stopped  # Restart the container unless manually stopped
+    image: postgres:latest
+    container_name: 40krusadeDB
+    restart: unless-stopped
     environment:
-      POSTGRES_USER: Prycebear  # Database username
-      POSTGRES_PASSWORD: Ashashcat1  # Database password
-      POSTGRES_DB: 40krusadeDB  # Name of the database to create on start
+      POSTGRES_USER: prycebear
+      POSTGRES_PASSWORD: Ashashcat1
+      POSTGRES_DB: 40krusadeDB
     ports:
-      - "5432:5432"  # Map the container's port 5432 to localhost:5432
+      - "5434:5432"
     volumes:
-      - pgdata:/var/lib/postgresql/data  # Use a volume to persist database data
+      - pgdata:/var/lib/postgresql/data
 
-# Define a named volume for persistent storage
 volumes:
   pgdata:  # This volume will store the database data
 

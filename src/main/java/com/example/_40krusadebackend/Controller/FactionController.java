@@ -21,7 +21,7 @@ public class FactionController {
         this.factionService = factionService;
     }
 
-    @PostMapping("/faction/new-faction")
+    @PostMapping("/new-faction")
     public ResponseEntity<Faction> createFaction(@RequestBody Faction faction) {
         Faction createdFaction = factionService.createFaction(faction);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdFaction);
