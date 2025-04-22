@@ -28,7 +28,7 @@ public class UnitDetails {
 
     @ElementCollection
     @Enumerated(EnumType.STRING)
-    @CollectionTable(name = "my_entity_enum_values", joinColumns = @JoinColumn(name = "my_entity_id"))
+    @CollectionTable(name = "unit_keywords_enum_values", joinColumns = @JoinColumn(name = "my_entity_id"))
     @Column(name = "UNIT_TYPE")
     private List<UnitType> unitType;
 
@@ -53,8 +53,8 @@ public class UnitDetails {
     @Column(name = "BASE_SIZE")
     private int baseSize;
 
-    @OneToOne
-    @PrimaryKeyJoinColumn
+    @ManyToOne
+    @JoinColumn(name = "FACTION_ID")
     private Faction faction;
 
     @Column(name = "UNIT_ABILITY")

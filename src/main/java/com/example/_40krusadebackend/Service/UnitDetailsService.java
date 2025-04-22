@@ -10,6 +10,6 @@ public interface UnitDetailsService {
     Optional<UnitDetails> getUnitById(Long unitDetailsId);
     Optional<UnitDetails> findByUnitOfficialName(String unitOfficialName);
     List<UnitDetails> getAllUnits();
-    UnitDetails updateUnit(Long unitDetailsId, UnitDetails unitOfficialName);
+    UnitDetails updateUnit(int unitDetailsId, UnitDetails unitOfficialName);
     void deleteUnit(Long unitDetailsId);
 }

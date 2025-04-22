@@ -45,9 +45,31 @@ public class UnitServiceImpl implements UnitDetailsService {
     }
 
     @Override
-    public UnitDetails updateUnit(Long unitDetailsId, UnitDetails unitOfficialName) {
-        return null;
+    public UnitDetails updateUnit(int unitDetailsId, UnitDetails updatedUnitDetails) {
+        // Fetch the existing entity and update fields in one go
+        UnitDetails existingUnitDetails = unitDetailsRepository.findById(unitDetailsId)
+                .orElseThrow(() -> new RuntimeException("Unit not found with id " + unitDetailsId));
+
+        existingUnitDetails.setUnitOfficialName(updatedUnitDetails.getUnitOfficialName());
+        existingUnitDetails.setUnitType(updatedUnitDetails.getUnitType());
+        existingUnitDetails.setMovementDistance(updatedUnitDetails.getMovementDistance());
+        existingUnitDetails.setToughnessValue(updatedUnitDetails.getToughnessValue());
+        existingUnitDetails.setArmourSave(updatedUnitDetails.getArmourSave());
+        existingUnitDetails.setMaxWounds(updatedUnitDetails.getMaxWounds());
+        existingUnitDetails.setLeadershipValue(updatedUnitDetails.getLeadershipValue());
+        existingUnitDetails.setObjectiveControl(updatedUnitDetails.getObjectiveControl());
+        existingUnitDetails.setBaseSize(updatedUnitDetails.getBaseSize());
+        existingUnitDetails.setFaction(updatedUnitDetails.getFaction());
+        existingUnitDetails.setUnitAbility(updatedUnitDetails.getUnitAbility());
+        existingUnitDetails.setUnitWargearOptions(updatedUnitDetails.getUnitWargearOptions());
+        existingUnitDetails.setUnitComposition(updatedUnitDetails.getUnitComposition());
+        existingUnitDetails.setUnitSize(updatedUnitDetails.getUnitSize());
+        existingUnitDetails.setUnitCost(updatedUnitDetails.getUnitCost());
+
+        // Save and flush to ensure immediate database update
+        return unitDetailsRepository.saveAndFlush(existingUnitDetails);
     }
+
 
     @Override
     public void deleteUnit(Long unitDetailsId) {

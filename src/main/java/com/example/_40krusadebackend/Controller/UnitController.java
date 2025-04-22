@@ -46,7 +46,7 @@ public class UnitController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UnitDetails> updateUnit(@PathVariable Long id, @RequestBody UnitDetails unitDetails) {
+    public ResponseEntity<UnitDetails> updateUnit(@PathVariable int id, @RequestBody UnitDetails unitDetails) {
         try {
             UnitDetails updated = unitService.updateUnit(id, unitDetails);
             return ResponseEntity.ok(updated);

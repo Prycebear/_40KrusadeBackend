@@ -12,5 +12,6 @@ public enum UnitType {
     REGIMENT,
     PLATOON,
     CADIAN,
-    CADIAN_SHOCK_TROOPS
+    CADIAN_SHOCK_TROOPS,
+    CATCHAN_JUNGLE_FIGHTERS,
     }
