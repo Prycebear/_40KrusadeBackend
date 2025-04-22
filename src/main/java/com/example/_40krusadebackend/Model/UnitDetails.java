@@ -2,12 +2,15 @@ package com.example._40krusadebackend.Model;
 
 
 import com.example._40krusadebackend.Enum.UnitType;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
@@ -15,7 +18,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UnitDetails {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "UNIT_DETAILS_ID")
@@ -24,8 +26,11 @@ public class UnitDetails {
     @Column(name = "UNIT_OFFICIAL_NAME")
     private String unitOfficialName;
 
+    @ElementCollection
+    @Enumerated(EnumType.STRING)
+    @CollectionTable(name = "my_entity_enum_values", joinColumns = @JoinColumn(name = "my_entity_id"))
     @Column(name = "UNIT_TYPE")
-    private UnitType unitType;
+    private List<UnitType> unitType;
 
     @Column(name = "MOVEMENT_DISTANCE")
     private int movementDistance;
@@ -45,21 +50,26 @@ public class UnitDetails {
     @Column(name = "OBJECTIVE_CONTROL")
     private int objectiveControl;
 
+    @Column(name = "BASE_SIZE")
+    private int baseSize;
+
     @OneToOne
     @PrimaryKeyJoinColumn
     private Faction faction;
 
-//    @ElementCollection
-//    @Column(name = "WEAPONS_AVAILABLE")
-//    private List<Weapon> weaponsAvailable;
+    @Column(name = "UNIT_ABILITY")
+    private String unitAbility;
 
-    //Abilities
+    @Column(name = "UNIT_WARGEAR_OPTIONS")
+    private String unitWargearOptions;
 
-    //WargearOptions
+    @Column(name = "UNIT_COMPOSITION")
+    private String unitComposition;
 
-    //UnitComposition
+    @Column(name = "UNIT_SIZE")
+    private int unitSize;
 
-    @ElementCollection
-    @Column(name = "WEAPON_ABILITIES")
-    private List<String> weaponAbilities;
+    @Column(name = "UNIT_COST")
+    private int unitCost;
+
 }

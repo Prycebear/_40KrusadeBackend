@@ -10,4 +10,6 @@ import org.springframework.stereotype.Repository;
 @EnableJpaRepositories
 public interface UnitDetailsRepository extends JpaRepository<UnitDetails, Integer> {
 
+    UnitDetails findByUnitOfficialName(String unitName);
+
 }

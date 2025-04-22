@@ -10,16 +10,16 @@ import lombok.NoArgsConstructor;
 @Table(name = "ABILITIES")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Abilities {
+public class Wargear {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ABILITY_ID")
-    private Integer abilityId;
+    @Column(name = "WARGEAR_ID")
+    private Integer wargearId;
 
-    @Column(name = "ABILITY_NAME")
-    private String abilityName;
+    @Column(name = "WARGEAR_NAME")
+    private String wargearName;
 
-    @Column(name = "ABILITY_DESCRIPTION")
-    private String abilityDescription;
+    @Column(name = "WARGEAR_DESCRIPTION")
+    private String wargearDescription;
 }

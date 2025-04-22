@@ -2,12 +2,12 @@ package com.example._40krusadebackend.Controller;
 
 import com.example._40krusadebackend.Model.UnitDetails;
 import com.example._40krusadebackend.Service.Impl.UnitServiceImpl;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/unit")
@@ -19,14 +19,12 @@ public class UnitController {
         this.unitService = unitService;
     }
 
-    // Create user
     @PostMapping
-    public ResponseEntity<UnitDetails> createUnit(@RequestBody UnitDetails unitDetails) {
-        UnitDetails createdUnit = unitService.createUnit(unitDetails);
+    public ResponseEntity<Optional<UnitDetails>> createUnit(@RequestBody UnitDetails unitDetails) {
+        Optional<UnitDetails> createdUnit = unitService.createUnit(unitDetails);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUnit);
     }
 
-    // Get user by ID
     @GetMapping("/{id}")
     public ResponseEntity<UnitDetails> getUnitById(@PathVariable Long id) {
         return unitService.getUnitById(id)
@@ -34,24 +32,21 @@ public class UnitController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // Get user by username
     @GetMapping("/by-unit_name/{unitName}")
     public ResponseEntity<UnitDetails> getUnitByUnitName(@PathVariable String unitName) {
-        return unitService.getUnitByUsername(unitName)
+        return unitService.findByUnitOfficialName(unitName)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // Get all users
     @GetMapping
-    public ResponseEntity<List<UnitDetails>> getAllUsers() {
+    public ResponseEntity<List<UnitDetails>> getAllUnits() {
         List<UnitDetails> units = unitService.getAllUnits();
         return ResponseEntity.ok(units);
     }
 
-    // Update user
     @PutMapping("/{id}")
-    public ResponseEntity<UnitDetails> updateUser(@PathVariable Long id, @RequestBody UnitDetails unitDetails) {
+    public ResponseEntity<UnitDetails> updateUnit(@PathVariable Long id, @RequestBody UnitDetails unitDetails) {
         try {
             UnitDetails updated = unitService.updateUnit(id, unitDetails);
             return ResponseEntity.ok(updated);
@@ -60,11 +55,9 @@ public class UnitController {
         }
     }
 
-    // Delete user
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteUnit(@PathVariable Long id) {
         unitService.deleteUnit(id);
         return ResponseEntity.noContent().build();
     }
-
 }

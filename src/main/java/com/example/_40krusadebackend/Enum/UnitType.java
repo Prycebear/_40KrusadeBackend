@@ -5,5 +5,12 @@ public enum UnitType {
     BATTLELINE,
     DEDICATED_TRANSPORT,
     OTHER,
-    ALLIED_UNITS
-}
+    ALLIED_UNITS,
+    INFANTRY,
+    IMPERIUM,
+    GRENADES,
+    REGIMENT,
+    PLATOON,
+    CADIAN,
+    CADIAN_SHOCK_TROOPS
+    }

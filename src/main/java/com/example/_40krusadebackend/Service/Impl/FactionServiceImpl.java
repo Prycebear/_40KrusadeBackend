@@ -17,6 +17,7 @@ public class FactionServiceImpl implements FactionService {
     public FactionServiceImpl(FactionRepository factionRepository) {
         this.factionRepository = factionRepository;
     }
+
     @Override
     public Faction createFaction(Faction faction) {
         return factionRepository.save(faction);

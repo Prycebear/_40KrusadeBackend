@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
@@ -37,7 +38,12 @@ public class Weapon {
     @Column(name = "DAMAGE_VALUE")
     private String damageValue;
 
-    @ElementCollection
-    @Column(name = "UNIT_KEYWORDS")
-    private List<String> unitKeywords;
+    @ManyToMany
+    @JoinTable(
+            name = "weapon_ability_link",
+            joinColumns = @JoinColumn(name = "weapon_id"),
+            inverseJoinColumns = @JoinColumn(name = "ability_id")
+    )
+    @Column(name = "ABILITIES")
+    private Set<Abilities> abilities;
 }
