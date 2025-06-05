@@ -1,6 +1,6 @@
 package com.example._40krusadebackend.Model.User;
 
-import com.example._40krusadebackend.Model.Crusade;
+import com.example._40krusadebackend.Model.CrusadeForce;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,5 +24,5 @@ public class AppUser {
     private String password;
     private String role;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Crusade> crusades = new ArrayList<>();
+    private List<CrusadeForce> crusadeForces = new ArrayList<>();
 }

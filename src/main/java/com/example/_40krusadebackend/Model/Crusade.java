@@ -6,9 +6,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Entity
-@Table(name = "CRUSADES")
+@Table(name = "CRUSADE")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Crusade {
@@ -18,33 +20,16 @@ public class Crusade {
     @Column(name = "CRUSADE_ID")
     private Integer crusadeId;
 
+    @Column(name = "CRUSADE_NAME")
+    private String crusadeName;
+
+    @Column(name = "CRUSADE_DESCRIPTION")
+    private String crusadeDescription;
+
     @ManyToOne
     @JoinColumn(name = "USER_ID", nullable = false)
-    private AppUser user;
+    private AppUser owner;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "FACTION_ID")
-    private Faction crusadeFaction;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "ORDER_OF_BATTLE_ID", referencedColumnName = "ORDER_OF_BATTLE_ID")
-    private OrderOfBattle orderOfBattle;
-
-    @Column(name = "CRUSADE_FORCE_NAME")
-    private String crusadeForceName;
-
-    @Column(name = "BATTLES_PLAYED")
-    private int battlesPlayed;
-
-    @Column(name = "BATTLES_WON")
-    private int battlesWon;
-
-    @Column(name = "REQUISITION_POINTS")
-    private int requisitionPoints;
-
-    @Column(name = "SUPPLY_LIMIT")
-    private int supplyLimit;
-
-    @Column(name = "CRUSADE_POINTS")
-    private int crusadePoints;
+    @OneToMany(mappedBy = "crusade", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CrusadeForce> forces;
 }

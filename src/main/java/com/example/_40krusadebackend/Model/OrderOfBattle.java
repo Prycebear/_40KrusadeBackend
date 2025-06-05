@@ -23,7 +23,7 @@ public class OrderOfBattle {
 
     @JsonIgnore
     @OneToOne(mappedBy = "orderOfBattle")
-    private Crusade crusade;
+    private CrusadeForce crusadeForce;
 
     @OneToMany(mappedBy = "orderOfBattle", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CrusadeUnit> units = new ArrayList<>();
