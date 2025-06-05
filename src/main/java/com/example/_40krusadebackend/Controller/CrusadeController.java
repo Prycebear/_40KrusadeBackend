@@ -1,12 +1,15 @@
 package com.example._40krusadebackend.Controller;
 
+import com.example._40krusadebackend.Dto.Auth.CrusadeDto;
 import com.example._40krusadebackend.Model.Crusade;
 import com.example._40krusadebackend.Service.CrusadeService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/crusades")
@@ -14,6 +17,8 @@ import java.util.List;
 public class CrusadeController {
 
     private final CrusadeService crusadeService;
+    private final ObjectMapper objectMapper;
+
 
     @PostMapping
     public ResponseEntity<Crusade> createCrusade(@RequestBody Crusade crusade) {
@@ -21,14 +26,30 @@ public class CrusadeController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Crusade>> getAllCrusadesForUser() {
-        return ResponseEntity.ok(crusadeService.getCrusadesForCurrentUser());
+    public ResponseEntity<List<CrusadeDto>> getAllCrusades() {
+        List<CrusadeDto> dtos = crusadeService.getAllCrusades().stream()
+                .map(crusade -> objectMapper.convertValue(crusade, CrusadeDto.class))
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(dtos);
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<Crusade>> getAllCrusadesForUser(@PathVariable Long userId) {
+        List<Crusade> crusades = crusadeService.getCrusadesByUserId(userId);
+        return ResponseEntity.ok(crusades);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Crusade> getCrusadeById(@PathVariable Integer id) {
+    public ResponseEntity<CrusadeDto> getCrusadeById(@PathVariable Integer id) {
         return crusadeService.getCrusadeById(id)
-                .map(ResponseEntity::ok)
+                .map(crusade -> ResponseEntity.ok(new CrusadeDto(
+                        crusade.getCrusadeId(),
+                        crusade.getCrusadeName(),
+                        crusade.getCrusadeDescription(),
+                        crusade.getOwner().getUsername(),
+                        crusade.getForces()
+                )))
                 .orElse(ResponseEntity.notFound().build());
     }
 

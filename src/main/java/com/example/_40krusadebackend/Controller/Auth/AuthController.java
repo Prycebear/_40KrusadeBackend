@@ -1,9 +1,9 @@
 package com.example._40krusadebackend.Controller.Auth;
 
 import com.example._40krusadebackend.Config.JwtUtil;
-import com.example._40krusadebackend.Dto.AuthRequest;
-import com.example._40krusadebackend.Dto.AuthResponse;
-import com.example._40krusadebackend.Dto.UserProfileDto;
+import com.example._40krusadebackend.Dto.Auth.AuthRequest;
+import com.example._40krusadebackend.Dto.Auth.AuthResponse;
+import com.example._40krusadebackend.Dto.Auth.UserProfileDto;
 import com.example._40krusadebackend.Model.User.AppUser;
 import com.example._40krusadebackend.Repository.UserRepository;
 import com.example._40krusadebackend.Service.Impl.UserService;

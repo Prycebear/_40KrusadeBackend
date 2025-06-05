@@ -1,18 +1,23 @@
 package com.example._40krusadebackend.Service.Impl;
 
+import com.example._40krusadebackend.Dto.Auth.CrusadeDto;
 import com.example._40krusadebackend.Model.Crusade;
 import com.example._40krusadebackend.Model.User.AppUser;
 import com.example._40krusadebackend.Repository.CrusadeRepository;
 import com.example._40krusadebackend.Repository.UserRepository;
 import com.example._40krusadebackend.Service.CrusadeService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -46,19 +51,18 @@ public class CrusadeServiceImpl implements CrusadeService {
         }
     }
 
+    @Override
+    public List<Crusade> getAllCrusades() {
+        return crusadeRepository.findAll();
+    }
 
     @Override
-    public List<Crusade> getCrusadesForCurrentUser() {
-        try {
-            AppUser currentUser = getCurrentUser();
-            List<Crusade> crusades = crusadeRepository.findAllByOwner(currentUser);
-            log.info("Fetched {} crusades for user '{}'", crusades.size(), currentUser.getUsername());
-            return crusades;
-        } catch (Exception e) {
-            log.error("Failed to fetch crusades: {}", e.getMessage(), e);
-            throw new RuntimeException("Error retrieving crusades");
-        }
+    public List<Crusade> getCrusadesByUserId(Long userId) {
+        AppUser user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+        return crusadeRepository.findAllByOwner(user);
     }
+
 
     @Override
     public Optional<Crusade> getCrusadeById(Integer id) {

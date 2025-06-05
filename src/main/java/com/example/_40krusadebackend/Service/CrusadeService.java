@@ -7,7 +7,11 @@ import java.util.Optional;
 
 public interface CrusadeService {
     Crusade createCrusade(Crusade crusade);
-    List<Crusade> getCrusadesForCurrentUser();
+
+    List<Crusade> getAllCrusades();
+
+    List<Crusade> getCrusadesByUserId(Long userId);
     Optional<Crusade> getCrusadeById(Integer id);
+
     boolean deleteCrusadeById(Integer id);
 }
