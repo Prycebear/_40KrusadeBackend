@@ -1,11 +1,9 @@
 package com.example._40krusadebackend.Controller;
 
 import com.example._40krusadebackend.Model.Faction;
-import com.example._40krusadebackend.Model.UnitDetails;
 import com.example._40krusadebackend.Service.Impl.FactionServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

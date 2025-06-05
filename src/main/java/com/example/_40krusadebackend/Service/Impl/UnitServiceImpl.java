@@ -21,7 +21,6 @@ public class UnitServiceImpl implements UnitDetailsService {
     @Override
     public Optional<UnitDetails> createUnit(UnitDetails unit) {
         Optional<UnitDetails> existingUnit = Optional.ofNullable(unitDetailsRepository.findByUnitOfficialName(unit.getUnitOfficialName()));
-
         if (existingUnit.isPresent()) {
             return existingUnit;
         }
@@ -46,7 +45,6 @@ public class UnitServiceImpl implements UnitDetailsService {
 
     @Override
     public UnitDetails updateUnit(int unitDetailsId, UnitDetails updatedUnitDetails) {
-        // Fetch the existing entity and update fields in one go
         UnitDetails existingUnitDetails = unitDetailsRepository.findById(unitDetailsId)
                 .orElseThrow(() -> new RuntimeException("Unit not found with id " + unitDetailsId));
 
@@ -66,7 +64,6 @@ public class UnitServiceImpl implements UnitDetailsService {
         existingUnitDetails.setUnitSize(updatedUnitDetails.getUnitSize());
         existingUnitDetails.setUnitCost(updatedUnitDetails.getUnitCost());
 
-        // Save and flush to ensure immediate database update
         return unitDetailsRepository.saveAndFlush(existingUnitDetails);
     }
 

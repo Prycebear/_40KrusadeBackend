@@ -1,5 +1,6 @@
 package com.example._40krusadebackend.Model;
 
+import com.example._40krusadebackend.Model.User.AppUser;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,9 +18,17 @@ public class Crusade {
     @Column(name = "CRUSADE_ID")
     private Integer crusadeId;
 
-    @ManyToOne(fetch = FetchType.LAZY)  // Many crusades can be associated with one faction
+    @ManyToOne
+    @JoinColumn(name = "USER_ID", nullable = false)
+    private AppUser user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "FACTION_ID")
     private Faction crusadeFaction;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "ORDER_OF_BATTLE_ID", referencedColumnName = "ORDER_OF_BATTLE_ID")
+    private OrderOfBattle orderOfBattle;
 
     @Column(name = "CRUSADE_FORCE_NAME")
     private String crusadeForceName;

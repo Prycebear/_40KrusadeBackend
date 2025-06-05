@@ -14,10 +14,12 @@ import java.util.Set;
 
 @Data
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "UNIT_DETAILS")
 @AllArgsConstructor
 @NoArgsConstructor
 public class UnitDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "UNIT_DETAILS_ID")
@@ -71,5 +73,4 @@ public class UnitDetails {
 
     @Column(name = "UNIT_COST")
     private int unitCost;
-
 }

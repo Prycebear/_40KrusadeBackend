@@ -13,34 +13,18 @@ import java.util.List;
 @Table(name = "CRUSADE_UNITS")
 @AllArgsConstructor
 @NoArgsConstructor
-public class CrusadeUnit{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "CRUSADE_UNIT_ID")
-    private Integer crusadeUnitId;
+public class CrusadeUnit extends UnitDetails {
 
-    @Column(name = "CRUSADE_UNIT_NAME")
-    private String crusadeUnitName;
+    @Column(name = "XP")
+    private int experience;
 
-    @Column(name = "UNIT_SIZE")
-    private int unitSize;
+    @Column(name = "KILLS")
+    private int kills;
 
-    @ManyToMany
-    @Column(name = "EQUIPPED_ENHANCMENTS")
-    private List<Enhancements> equippedEnhancements;
+    @Column(name = "BATTLE_HONOURS")
+    private String battleHonours;
 
-    @Column(name = "TOUGHNESS_VALUE")
-    private int toughnessValue;
-
-    @Column(name = "UARMOUR_SAVE")
-    private int armourSave;
-
-    @Column(name = "MAX_WOUNDS")
-    private int maxWounds;
-
-    @Column(name = "LEADERSHIP_VALUE")
-    private int leadershipValue;
-
-    @Column(name = "OBJECTIVE_CONTROL")
-    private int objectiveControl;
+    @ManyToOne
+    @JoinColumn(name = "ORDER_OF_BATTLE_ID")
+    private OrderOfBattle orderOfBattle;
 }
