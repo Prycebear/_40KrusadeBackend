@@ -1,5 +1,6 @@
 package com.example._40krusadebackend.Service;
 
+import com.example._40krusadebackend.Model.CrusadeUnit;
 import com.example._40krusadebackend.Model.OrderOfBattle;
 
 import java.util.List;
@@ -16,4 +17,8 @@ public interface OrderOfBattleService {
     OrderOfBattle updateOrderOfBattle(Integer id, OrderOfBattle updatedOrderOfBattle);
 
     boolean deleteOrderOfBattle(Integer id);
+
+    CrusadeUnit addUnitToOrderOfBattle(Integer orderOfBattleId, CrusadeUnit unit);
+
+    Optional<OrderOfBattle> getOrderOfBattleByCrusadeForceId(Integer crusadeForceId);
 }

@@ -1,23 +1,19 @@
 package com.example._40krusadebackend.Service.Impl;
 
-import com.example._40krusadebackend.Dto.Auth.CrusadeDto;
 import com.example._40krusadebackend.Model.Crusade;
 import com.example._40krusadebackend.Model.User.AppUser;
 import com.example._40krusadebackend.Repository.CrusadeRepository;
 import com.example._40krusadebackend.Repository.UserRepository;
 import com.example._40krusadebackend.Service.CrusadeService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -83,20 +79,32 @@ public class CrusadeServiceImpl implements CrusadeService {
     }
 
     @Override
-    public boolean deleteCrusadeById(Integer id) {
+    public boolean deleteCrusadeById(Integer id) throws AccessDeniedException {
         try {
-            Optional<Crusade> crusade = getCrusadeById(id);
-            if (crusade.isPresent()) {
-                crusadeRepository.delete(crusade.get());
-                log.info("Crusade ID {} deleted successfully", id);
-                return true;
-            } else {
-                log.warn("Attempted to delete crusade ID {} but it was not found or unauthorized", id);
+            AppUser currentUser = getCurrentUser();
+            Optional<Crusade> optionalCrusade = crusadeRepository.findById(id);
+
+            if (optionalCrusade.isEmpty()) {
+                log.warn("Attempted to delete Crusade ID {} but it was not found", id);
                 return false;
             }
+
+            Crusade crusade = optionalCrusade.get();
+
+            if (!crusade.getOwner().getId().equals(currentUser.getId())) {
+                log.warn("User '{}' attempted to delete Crusade ID {} they do not own", currentUser.getUsername(), id);
+                throw new AccessDeniedException("You do not have permission to delete this Crusade.");
+            }
+
+            crusadeRepository.delete(crusade);
+            log.info("Crusade ID {} deleted successfully by user '{}'", id, currentUser.getUsername());
+            return true;
+
+        } catch (AccessDeniedException e) {
+            throw e;
         } catch (Exception e) {
-            log.error("Failed to delete crusade ID {}: {}", id, e.getMessage(), e);
-            throw new RuntimeException("Error deleting crusade");
+            log.error("Failed to delete Crusade ID {}: {}", id, e.getMessage(), e);
+            throw new RuntimeException("Error deleting Crusade");
         }
     }
 

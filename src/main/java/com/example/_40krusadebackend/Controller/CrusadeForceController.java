@@ -1,19 +1,24 @@
 package com.example._40krusadebackend.Controller;
 
 import com.example._40krusadebackend.Model.CrusadeForce;
+import com.example._40krusadebackend.Model.OrderOfBattle;
 import com.example._40krusadebackend.Service.CrusadeForceService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/crusade-force")
 @RequiredArgsConstructor
 public class CrusadeForceController {
 
     private final CrusadeForceService crusadeForceService;
+
 
     @PostMapping
     public ResponseEntity<CrusadeForce> createCrusadeForce(@RequestBody CrusadeForce crusadeForceRequest) {
@@ -72,4 +77,17 @@ public class CrusadeForceController {
                 })
                 .orElse(ResponseEntity.notFound().build());
     }
+
+    @PostMapping("/{id}/orderofbattle")
+    public ResponseEntity<?> addOrderOfBattleToCrusadeForce(@PathVariable Integer id,
+                                                            @RequestBody OrderOfBattle orderOfBattle) {
+        try {
+            CrusadeForce updatedForce = crusadeForceService.addOrderOfBattleToCrusadeForce(id, orderOfBattle);
+            return ResponseEntity.ok(updatedForce);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error adding OrderOfBattle: " + e.getMessage());
+        }
+    }
+
 }

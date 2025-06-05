@@ -15,6 +15,9 @@ import java.util.List;
 @NoArgsConstructor
 public class CrusadeUnit extends UnitDetails {
 
+    @Column(name = "CRUSADE_UNIT_NAME")
+    private String crusadeUnitName;
+
     @Column(name = "XP")
     private int experience;
 

@@ -1,7 +1,9 @@
 package com.example._40krusadebackend.Service.Impl;
 
 import com.example._40krusadebackend.Model.CrusadeForce;
+import com.example._40krusadebackend.Model.OrderOfBattle;
 import com.example._40krusadebackend.Repository.CrusadeForceRepository;
+import com.example._40krusadebackend.Repository.OrderOfBattleRepository;
 import com.example._40krusadebackend.Repository.UserRepository;
 import com.example._40krusadebackend.Service.CrusadeForceService;
 import com.example._40krusadebackend.Model.User.AppUser;
@@ -18,6 +20,8 @@ import java.util.Optional;
 public class CrusadeForceServiceImpl implements CrusadeForceService {
 
     private final CrusadeForceRepository crusadeForceRepository;
+    private final OrderOfBattleRepository orderOfBattleRepository;
+
     private final UserRepository userRepository;
 
     @Override
@@ -55,5 +59,15 @@ public class CrusadeForceServiceImpl implements CrusadeForceService {
         String username = authentication.getName();
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found: " + username));
+    }
+
+    public CrusadeForce addOrderOfBattleToCrusadeForce(Integer crusadeForceId, OrderOfBattle orderOfBattle) {
+        CrusadeForce crusadeForce = crusadeForceRepository.findById(crusadeForceId)
+                .orElseThrow(() -> new RuntimeException("CrusadeForce not found: " + crusadeForceId));
+
+        OrderOfBattle savedOrderOfBattle = orderOfBattleRepository.save(orderOfBattle);
+
+        crusadeForce.setOrderOfBattle(savedOrderOfBattle);
+        return crusadeForceRepository.save(crusadeForce);
     }
 }
