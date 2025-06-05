@@ -28,19 +28,13 @@ public class UnitDetails {
     @Column(name = "UNIT_OFFICIAL_NAME")
     private String unitOfficialName;
 
-    @ElementCollection
-    @Enumerated(EnumType.STRING)
-    @CollectionTable(name = "unit_keywords_enum_values", joinColumns = @JoinColumn(name = "my_entity_id"))
-    @Column(name = "UNIT_TYPE")
-    private List<UnitType> unitType;
-
     @Column(name = "MOVEMENT_DISTANCE")
     private int movementDistance;
 
     @Column(name = "TOUGHNESS_VALUE")
     private int toughnessValue;
 
-    @Column(name = "UARMOUR_SAVE")
+    @Column(name = "ARMOUR_SAVE")
     private int armourSave;
 
     @Column(name = "MAX_WOUNDS")

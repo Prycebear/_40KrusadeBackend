@@ -7,30 +7,32 @@ import com.example._40krusadebackend.Service.OrderOfBattleService;
 import com.example._40krusadebackend.Translator.OrderOfBattleMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/order-of-battle")
 @RequiredArgsConstructor
-@Slf4j
 public class OrderOfBattleController {
 
     private final OrderOfBattleService orderOfBattleService;
 
     @PostMapping
-    public ResponseEntity<?> createOrderOfBattle(@RequestBody OrderOfBattle orderOfBattle) {
+    public ResponseEntity<OrderOfBattle> createOrderOfBattle(@RequestBody OrderOfBattle orderOfBattle) {
         try {
             OrderOfBattle created = orderOfBattleService.createOrderOfBattle(orderOfBattle);
             return ResponseEntity.ok(created);
         } catch (Exception e) {
-            log.error("Failed to create Order of Battle: {}", e.getMessage(), e);
-            return ResponseEntity.internalServerError().body("Could not create Order of Battle.");
+            log.error("Failed to create OrderOfBattle", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(null);
         }
-    }
+    }//works but needs work for units
 
     @GetMapping
     public ResponseEntity<?> getAllOrderOfBattles() {
@@ -41,7 +43,7 @@ public class OrderOfBattleController {
             log.error("Failed to fetch all Orders of Battle: {}", e.getMessage(), e);
             return ResponseEntity.internalServerError().body("Could not fetch Orders of Battle.");
         }
-    }
+    }//works
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getOrderOfBattleById(@PathVariable Integer id) {
@@ -60,23 +62,21 @@ public class OrderOfBattleController {
             log.error("Error fetching Order of Battle by ID {}: {}", id, e.getMessage(), e);
             return ResponseEntity.internalServerError().body("Could not fetch Order of Battle.");
         }
-    }
+    }//works
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateOrderOfBattle(
+    public ResponseEntity<OrderOfBattle> updateOrderOfBattle(
             @PathVariable Integer id,
             @RequestBody OrderOfBattle updatedOrderOfBattle) {
+        System.out.println("Fuck me");
         try {
             OrderOfBattle updated = orderOfBattleService.updateOrderOfBattle(id, updatedOrderOfBattle);
             return ResponseEntity.ok(updated);
         } catch (RuntimeException e) {
             log.warn("Order of Battle not found with ID {} for update.", id);
             return ResponseEntity.notFound().build();
-        } catch (Exception e) {
-            log.error("Failed to update Order of Battle ID {}: {}", id, e.getMessage(), e);
-            return ResponseEntity.internalServerError().body("Could not update Order of Battle.");
         }
-    }
+    }//no work
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteOrderOfBattle(@PathVariable Integer id) {
@@ -92,7 +92,7 @@ public class OrderOfBattleController {
             log.error("Failed to delete Order of Battle ID {}: {}", id, e.getMessage(), e);
             return ResponseEntity.internalServerError().body("Could not delete Order of Battle.");
         }
-    }
+    }//works
 
     @PostMapping("/{id}/units")
     public ResponseEntity<?> addUnitToOrderOfBattle(@PathVariable Integer id,

@@ -19,31 +19,37 @@ public class UnitController {
         this.unitService = unitService;
     }
 
+    @GetMapping
+    public ResponseEntity<List<UnitDetails>> getAllUnits() {
+        List<UnitDetails> units = unitService.getAllUnits();
+        return ResponseEntity.ok(units);
+    }//works
+
     @PostMapping
-    public ResponseEntity<Optional<UnitDetails>> createUnit(@RequestBody UnitDetails unitDetails) {
+    public ResponseEntity<?> createUnit(@RequestBody UnitDetails unitDetails) {
         Optional<UnitDetails> createdUnit = unitService.createUnit(unitDetails);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdUnit);
-    }
+        if (createdUnit.isPresent()) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdUnit.get());
+        } else {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body("Unit with the same official name already exists.");
+        }
+    }//works
 
     @GetMapping("/{id}")
-    public ResponseEntity<UnitDetails> getUnitById(@PathVariable Long id) {
+    public ResponseEntity<UnitDetails> getUnitById(@PathVariable int id) {
         return unitService.getUnitById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
-    }
+    }//works
 
     @GetMapping("/by-unit_name/{unitName}")
     public ResponseEntity<UnitDetails> getUnitByUnitName(@PathVariable String unitName) {
         return unitService.findByUnitOfficialName(unitName)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
-    }
+    }//works
 
-    @GetMapping
-    public ResponseEntity<List<UnitDetails>> getAllUnits() {
-        List<UnitDetails> units = unitService.getAllUnits();
-        return ResponseEntity.ok(units);
-    }
 
     @PutMapping("/{id}")
     public ResponseEntity<UnitDetails> updateUnit(@PathVariable int id, @RequestBody UnitDetails unitDetails) {
@@ -53,10 +59,10 @@ public class UnitController {
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }
-    }
+    }//works
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUnit(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteUnit(@PathVariable int id) {
         unitService.deleteUnit(id);
         return ResponseEntity.noContent().build();
     }

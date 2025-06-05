@@ -2,7 +2,6 @@ package com.example._40krusadebackend.Service.Impl;
 
 import com.example._40krusadebackend.Model.Crusade;
 import com.example._40krusadebackend.Model.CrusadeForce;
-import com.example._40krusadebackend.Model.Faction;
 import com.example._40krusadebackend.Model.OrderOfBattle;
 import com.example._40krusadebackend.Repository.*;
 import com.example._40krusadebackend.Service.CrusadeForceService;
@@ -26,7 +25,6 @@ public class CrusadeForceServiceImpl implements CrusadeForceService {
     private final OrderOfBattleRepository orderOfBattleRepository;
     private final CrusadeRepository crusadeRepository;
     private final FactionRepository factionRepository;
-
     private final UserRepository userRepository;
 
     @Override
@@ -34,27 +32,29 @@ public class CrusadeForceServiceImpl implements CrusadeForceService {
         try {
             AppUser currentUser = getCurrentUser();
             crusadeForce.setUser(currentUser);
+            crusadeForce.setSupplyLimit(1000);
+            crusadeForce.setRequisitionPoints(5);
 
-            if (crusadeForce.getCrusade() == null || crusadeForce.getCrusade().getCrusadeId() == null) {
-                throw new IllegalArgumentException("Crusade must be provided and must have a valid ID.");
-            }
+            // Validate and attach Crusade
+            Integer crusadeId = Optional.ofNullable(crusadeForce.getCrusade())
+                    .map(Crusade::getCrusadeId)
+                    .orElseThrow(() -> new IllegalArgumentException("Crusade must be provided and have a valid ID."));
+            crusadeForce.setCrusade(crusadeRepository.findById(crusadeId)
+                    .orElseThrow(() -> new EntityNotFoundException("Crusade with ID " + crusadeId + " not found.")));
 
-            Crusade managedCrusade = crusadeRepository.findById(crusadeForce.getCrusade().getCrusadeId())
-                    .orElseThrow(() -> new EntityNotFoundException("Crusade with ID " + crusadeForce.getCrusade().getCrusadeId() + " not found."));
-            crusadeForce.setCrusade(managedCrusade);
-
+            // Validate and attach Faction (optional)
             if (crusadeForce.getCrusadeFaction() != null) {
                 Integer factionId = crusadeForce.getCrusadeFaction().getFactionId();
                 if (factionId == null) {
                     throw new IllegalArgumentException("Faction must have a valid ID.");
                 }
-                Faction managedFaction = factionRepository.findById(factionId)
-                        .orElseThrow(() -> new EntityNotFoundException("Faction with ID " + factionId + " not found."));
-                crusadeForce.setCrusadeFaction(managedFaction);
+                crusadeForce.setCrusadeFaction(factionRepository.findById(factionId)
+                        .orElseThrow(() -> new EntityNotFoundException("Faction with ID " + factionId + " not found.")));
             }
+
+            // Set bidirectional link if order of battle is provided
             if (crusadeForce.getOrderOfBattle() != null) {
-                OrderOfBattle ob = crusadeForce.getOrderOfBattle();
-                ob.setCrusadeForce(crusadeForce); // Bidirectional safety
+                crusadeForce.getOrderOfBattle().setCrusadeForce(crusadeForce);
             }
 
             CrusadeForce saved = crusadeForceRepository.save(crusadeForce);
@@ -70,6 +70,11 @@ public class CrusadeForceServiceImpl implements CrusadeForceService {
         }
     }
 
+    @Override
+    public List<CrusadeForce> getAllCrusades() {
+        return crusadeForceRepository.findAll();
+    }
+
 
     @Override
     public List<CrusadeForce> getCrusadesForCurrentUser() {
@@ -82,6 +87,26 @@ public class CrusadeForceServiceImpl implements CrusadeForceService {
         AppUser currentUser = getCurrentUser();
         return crusadeForceRepository.findById(id)
                 .filter(c -> c.getUser().getId().equals(currentUser.getId()));
+    }
+
+    @Override
+    public Optional<CrusadeForce> updateCrusadeForce(Integer id, CrusadeForce updates) {
+        return getCrusadeById(id).map(existing -> {
+            existing.setCrusadeForceName(updates.getCrusadeForceName());
+            existing.setCrusadeFaction(updates.getCrusadeFaction());
+            existing.setOrderOfBattle(updates.getOrderOfBattle());
+            existing.setBattlesPlayed(updates.getBattlesPlayed());
+            existing.setBattlesWon(updates.getBattlesWon());
+            existing.setRequisitionPoints(updates.getRequisitionPoints());
+            existing.setSupplyLimit(updates.getSupplyLimit());
+            existing.setCrusadePoints(updates.getCrusadePoints());
+
+            if (existing.getOrderOfBattle() != null) {
+                existing.getOrderOfBattle().setCrusadeForce(existing); // Ensure bi-directional link
+            }
+
+            return crusadeForceRepository.save(existing);
+        });
     }
 
     @Override
@@ -101,13 +126,4 @@ public class CrusadeForceServiceImpl implements CrusadeForceService {
                 .orElseThrow(() -> new RuntimeException("User not found: " + username));
     }
 
-    public CrusadeForce addOrderOfBattleToCrusadeForce(Integer crusadeForceId, OrderOfBattle orderOfBattle) {
-        CrusadeForce crusadeForce = crusadeForceRepository.findById(crusadeForceId)
-                .orElseThrow(() -> new RuntimeException("CrusadeForce not found: " + crusadeForceId));
-
-        OrderOfBattle savedOrderOfBattle = orderOfBattleRepository.save(orderOfBattle);
-
-        crusadeForce.setOrderOfBattle(savedOrderOfBattle);
-        return crusadeForceRepository.save(crusadeForce);
-    }
 }

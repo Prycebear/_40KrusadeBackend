@@ -6,6 +6,8 @@ import com.example._40krusadebackend.Model.OrderOfBattle;
 import com.example._40krusadebackend.Repository.CrusadeForceRepository;
 import com.example._40krusadebackend.Repository.OrderOfBattleRepository;
 import com.example._40krusadebackend.Service.OrderOfBattleService;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -45,14 +47,17 @@ public class OrderOfBattleServiceImpl implements OrderOfBattleService {
 
 
     @Override
+    @Transactional
     public OrderOfBattle updateOrderOfBattle(Integer id, OrderOfBattle updatedOrderOfBattle) {
         return orderOfBattleRepository.findById(id).map(existing -> {
-            existing.setUnits(updatedOrderOfBattle.getUnits());
+            if (updatedOrderOfBattle.getUnits() != null) {
+                existing.setUnits(updatedOrderOfBattle.getUnits());
+            }
             log.info("Updated Order of Battle with ID {}", id);
             return orderOfBattleRepository.save(existing);
         }).orElseThrow(() -> {
             log.warn("Attempted to update non-existent Order of Battle with ID {}", id);
-            return new RuntimeException("Order of Battle not found");
+            return new EntityNotFoundException("Order of Battle not found with ID " + id);
         });
     }
 

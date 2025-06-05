@@ -11,11 +11,14 @@ public interface CrusadeForceService {
 
     CrusadeForce createCrusade(CrusadeForce crusadeForce);
 
+    List<CrusadeForce> getAllCrusades();
+
     List<CrusadeForce> getCrusadesForCurrentUser();
 
     Optional<CrusadeForce> getCrusadeById(Integer id);
 
+    Optional<CrusadeForce> updateCrusadeForce(Integer id, CrusadeForce updates);
+
     boolean deleteCrusadeById(Integer id);
 
-    CrusadeForce addOrderOfBattleToCrusadeForce(Integer crusadeForceId, OrderOfBattle orderOfBattle);
 }
