@@ -8,5 +8,5 @@ public record CrusadeDto(Integer crusadeId,
                                 String crusadeName,
                                 String crusadeDescription,
                                 AppUserUsernameDto owner,
-                                List<CrusadeForce> forces) {
+                                List<CrusadeForceInCrusadeListDto> forces) {
 }

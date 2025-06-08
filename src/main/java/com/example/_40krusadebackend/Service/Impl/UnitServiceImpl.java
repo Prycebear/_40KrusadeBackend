@@ -26,7 +26,7 @@ public class UnitServiceImpl implements UnitDetailsService {
             return existingUnit;
         }
         UnitDetails saved = unitDetailsRepository.save(unit);
-        log.info("Created new unit with ID {}", saved.getUnitDetailsId());
+        log.info("Created new unit with ID {}", saved.getId());
         return Optional.of(saved);
     }
 
@@ -63,7 +63,7 @@ public class UnitServiceImpl implements UnitDetailsService {
             existing.setUnitSize(updatedUnitDetails.getUnitSize());
             existing.setUnitCost(updatedUnitDetails.getUnitCost());
             UnitDetails saved = unitDetailsRepository.save(existing);
-            log.info("Updated unit with ID {}", saved.getUnitDetailsId());
+            log.info("Updated unit with ID {}", saved.getId());
             return saved;
         }).orElseThrow(() -> {
             log.warn("Attempted to update non-existent unit with ID {}", unitDetailsId);

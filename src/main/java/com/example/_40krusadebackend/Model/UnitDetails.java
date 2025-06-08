@@ -22,8 +22,8 @@ public class UnitDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "UNIT_DETAILS_ID")
-    private Integer unitDetailsId;
+    @Column(name = "UNIT_DETAILS_ID") // optional: can stay
+    private Integer id;
 
     @Column(name = "UNIT_OFFICIAL_NAME")
     private String unitOfficialName;

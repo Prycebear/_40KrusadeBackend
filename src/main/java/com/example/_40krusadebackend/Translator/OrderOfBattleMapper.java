@@ -14,7 +14,7 @@ public class OrderOfBattleMapper {
     public static OrderOfBattleDto toDto(OrderOfBattle orderOfBattle) {
         List<CrusadeUnitSummaryDto> unitDtos = orderOfBattle.getUnits().stream()
                 .map(unit -> new CrusadeUnitSummaryDto(
-                        unit.getUnitDetailsId(),
+                        unit.getId(),
                         unit.getUnitOfficialName(),
                         unit.getCrusadeUnitName(),
                         unit.getExperience()
@@ -26,7 +26,7 @@ public class OrderOfBattleMapper {
 
     private static CrusadeUnitDto toUnitDto(CrusadeUnit unit) {
         return new CrusadeUnitDto(
-                unit.getUnitDetailsId(),
+                unit.getId(),
                 unit.getUnitOfficialName(),
                 unit.getExperience(),
                 unit.getKills()

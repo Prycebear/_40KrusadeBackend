@@ -1,6 +1,8 @@
 package com.example._40krusadebackend.Model;
 
 import com.example._40krusadebackend.Model.User.AppUser;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,5 +33,6 @@ public class Crusade {
     private AppUser owner;
 
     @OneToMany(mappedBy = "crusade", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<CrusadeForce> forces;
 }

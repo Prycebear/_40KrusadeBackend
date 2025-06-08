@@ -4,6 +4,8 @@ import com.example._40krusadebackend.Dto.AppUserUsernameDto;
 import com.example._40krusadebackend.Dto.CrusadeDto;
 import com.example._40krusadebackend.Model.Crusade;
 import com.example._40krusadebackend.Service.CrusadeService;
+import com.example._40krusadebackend.Translator.CrusadeForceTranslator;
+import com.example._40krusadebackend.Translator.CrusadeTranslator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.AccessDeniedException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -20,6 +23,7 @@ import java.util.stream.Collectors;
 public class CrusadeController {
 
     private final CrusadeService crusadeService;
+    private final CrusadeTranslator crusadeTranslator;
     private final ObjectMapper objectMapper;
 
 
@@ -30,35 +34,26 @@ public class CrusadeController {
 
     @GetMapping
     public ResponseEntity<List<CrusadeDto>> getAllCrusades() {
-        List<CrusadeDto> dtos = crusadeService.getAllCrusades().stream()
-                .map(crusade -> objectMapper.convertValue(crusade, CrusadeDto.class))
-                .collect(Collectors.toList());
-
-        return ResponseEntity.ok(dtos);
+        return ResponseEntity.ok(crusadeService.getAllCrusades().stream()
+                .map(crusade -> crusadeTranslator.crusadeToCrusadeDto(crusade))
+                .collect(Collectors.toList()));
     } //works
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Crusade>> getAllCrusadesForUser(@PathVariable Long userId) {
-        List<Crusade> crusades = crusadeService.getCrusadesByUserId(userId);
-        return ResponseEntity.ok(crusades);
+    public ResponseEntity<List<CrusadeDto>> getAllCrusadesForUser(@PathVariable Long userId) {
+        return ResponseEntity.ok(crusadeService.getCrusadesByUserId(userId).stream()
+                .map(crusade -> crusadeTranslator.crusadeToCrusadeDto(crusade))
+                .collect(Collectors.toList()));
     }//works
 
     @GetMapping("/{id}")
     public ResponseEntity<CrusadeDto> getCrusadeById(@PathVariable Integer id) {
         return crusadeService.getCrusadeById(id)
-                .map(crusade -> {
-                    AppUserUsernameDto ownerDto = new AppUserUsernameDto(crusade.getOwner().getUsername());
-                    CrusadeDto dto = new CrusadeDto(
-                            crusade.getCrusadeId(),
-                            crusade.getCrusadeName(),
-                            crusade.getCrusadeDescription(),
-                            ownerDto,
-                            crusade.getForces()
-                    );
-                    return ResponseEntity.ok(dto);
-                })
+                .map(crusadeTranslator::crusadeToCrusadeDto)
+                .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }//works for user
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteCrusade(@PathVariable Integer id) {

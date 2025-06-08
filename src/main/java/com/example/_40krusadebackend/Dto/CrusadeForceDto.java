@@ -8,7 +8,6 @@ public record CrusadeForceDto(
         int requisitionPoints,
         int supplyLimit,
         int crusadePoints,
-        Integer crusadeId,
         Integer factionId,
         String username) {
 }

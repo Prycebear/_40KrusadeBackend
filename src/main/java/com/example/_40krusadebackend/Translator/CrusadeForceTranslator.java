@@ -15,7 +15,6 @@ public class CrusadeForceTranslator {
                 force.getSupplyLimit(),
                 force.getCrusadePoints(),
                 force.getCrusade() != null ? force.getCrusade().getCrusadeId() : null,
-                force.getCrusadeFaction() != null ? force.getCrusadeFaction().getFactionId() : null,
                 force.getUser() != null ? force.getUser().getUsername() : null
         );
     }

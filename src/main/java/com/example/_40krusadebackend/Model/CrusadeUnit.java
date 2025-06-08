@@ -24,8 +24,8 @@ public class CrusadeUnit extends UnitDetails {
     @Column(name = "KILLS")
     private int kills;
 
-    @Column(name = "BATTLE_HONOURS")
-    private String battleHonours;
+    @OneToMany(mappedBy = "crusadeUnit", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CrusadeUpgrade> upgrades;
 
     @ManyToOne
     @JoinColumn(name = "ORDER_OF_BATTLE_ID")

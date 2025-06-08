@@ -1,6 +1,8 @@
 package com.example._40krusadebackend.Model;
 
 import com.example._40krusadebackend.Model.User.AppUser;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,6 +26,7 @@ public class CrusadeForce {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CRUSADE_ID", nullable = false)
+    @JsonBackReference
     private Crusade crusade;
 
     @ManyToOne(fetch = FetchType.LAZY)
