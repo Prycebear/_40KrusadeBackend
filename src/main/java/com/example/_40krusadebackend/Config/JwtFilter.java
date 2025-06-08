@@ -23,7 +23,6 @@ public class JwtFilter extends OncePerRequestFilter {
     @Autowired
     private UserService userDetailsService;
 
-    // Add the endpoints you want to skip
     private static final String[] WHITELIST = {
             "/api/auth/login",
             "/api/auth/register"
@@ -34,7 +33,7 @@ public class JwtFilter extends OncePerRequestFilter {
         String path = request.getServletPath();
         for (String endpoint : WHITELIST) {
             if (path.equals(endpoint)) {
-                return true; // Skip filtering for this request
+                return true;
             }
         }
         return false; // Proceed with filtering

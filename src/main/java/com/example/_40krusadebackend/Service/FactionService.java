@@ -8,9 +8,9 @@ import java.util.Optional;
 
 public interface FactionService {
     Faction createFaction(Faction faction);
-    Optional<Faction> getFactionById(Long factionId);
+    Optional<Faction> getFactionById(int factionId);
     Optional<Faction> getFactionByFactionName(String factionName);
     List<Faction> getAllFactions();
-    Faction updateFaction(Long factionId, Faction faction);
-    void deleteFaction(Long factionId);
+    Faction updateFaction(int factionId, Faction faction);
+    void deleteFaction(int factionId);
 }

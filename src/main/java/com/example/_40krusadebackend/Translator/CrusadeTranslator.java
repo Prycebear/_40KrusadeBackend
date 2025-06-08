@@ -17,7 +17,7 @@ public class CrusadeTranslator {
         List<CrusadeForceInCrusadeListDto> forceDtos = crusade.getForces().stream()
                 .map(force -> {
                     CrusadeForceInCrusadeListDto forceDto = new CrusadeForceInCrusadeListDto(force.getCrusadeId(),
-                            force.getCrusadeForceName());
+                            force.getCrusadeForceName(), force.getUser().getUsername());
                     return forceDto;
                 })
                 .collect(Collectors.toList());

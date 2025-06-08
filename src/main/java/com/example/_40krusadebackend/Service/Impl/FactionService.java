@@ -2,7 +2,6 @@ package com.example._40krusadebackend.Service.Impl;
 
 import com.example._40krusadebackend.Model.Faction;
 import com.example._40krusadebackend.Repository.FactionRepository;
-import com.example._40krusadebackend.Service.FactionService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -10,11 +9,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class FactionServiceImpl implements FactionService {
+public class FactionService implements com.example._40krusadebackend.Service.FactionService {
 
     private final FactionRepository factionRepository;
 
-    public FactionServiceImpl(FactionRepository factionRepository) {
+    public FactionService(FactionRepository factionRepository) {
         this.factionRepository = factionRepository;
     }
 
@@ -24,7 +23,7 @@ public class FactionServiceImpl implements FactionService {
     }
 
     @Override
-    public Optional<Faction> getFactionById(Long factionId) {
+    public Optional<Faction> getFactionById(int factionId) {
         return factionRepository.findById(Math.toIntExact(factionId));
     }
 
@@ -39,8 +38,8 @@ public class FactionServiceImpl implements FactionService {
     }
 
     @Override
-    public Faction updateFaction(Long factionId, Faction unitOfficial) {
-        Faction existingFaction = factionRepository.findById(Math.toIntExact(factionId))
+    public Faction updateFaction(int factionId, Faction unitOfficial) {
+        Faction existingFaction = factionRepository.findById(factionId)
                 .orElseThrow(() -> new EntityNotFoundException("Faction not found with ID: " + factionId));
 
         existingFaction.setFactionName(unitOfficial.getFactionName());
@@ -48,8 +47,8 @@ public class FactionServiceImpl implements FactionService {
     }
 
     @Override
-    public void deleteFaction(Long factionId) {
-        factionRepository.findById(Math.toIntExact(factionId))
+    public void deleteFaction(int factionId) {
+        factionRepository.findById(factionId)
                 .ifPresentOrElse(
                         faction -> factionRepository.delete(faction),
                         () -> { throw new EntityNotFoundException("Faction not found with ID: " + factionId); }

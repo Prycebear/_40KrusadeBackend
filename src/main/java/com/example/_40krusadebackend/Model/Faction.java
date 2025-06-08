@@ -28,6 +28,5 @@ public class Faction {
 
     @JsonIgnore
     @OneToMany(mappedBy = "crusadeFaction", cascade = CascadeType.ALL, orphanRemoval = true)
-    @Column(name = "CRUSADE_FACTIONS")
     private List<CrusadeForce> crusadeForces;
 }

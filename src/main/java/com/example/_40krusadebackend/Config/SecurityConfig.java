@@ -34,8 +34,8 @@ public class SecurityConfig {
         http.csrf().disable()
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/login", "/api/auth/register").permitAll()
-                        .requestMatchers(HttpMethod.PUT, "/**").permitAll()// Allow public access to these
-                        .anyRequest().authenticated() // Other endpoints require authentication
+                        .requestMatchers(HttpMethod.PUT, "/**").permitAll()
+                        .anyRequest().authenticated()
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .cors();
